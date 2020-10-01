@@ -1,0 +1,343 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+<META NAME="generator" CONTENT="http://txt2tags.org">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+<TITLE>Tutorial 1.1: Buildroot e QEMU (v1.2)</TITLE>
+
+<!-- Included tutorial.css -->
+<STYLE TYPE="text/css">
+pre {
+
+	background-color:#E0E0E0  ;
+	}
+
+</STYLE>
+
+</HEAD><BODY BGCOLOR="white" TEXT="black">
+<CENTER>
+<H1>Tutorial 1.1: Buildroot e QEMU (v1.2)</H1>
+</CENTER>
+
+<P></P>
+<HR NOSHADE SIZE=1>
+<P></P>
+
+  <OL>
+  <LI><A HREF="#toc1">Introdução</A>
+  <LI><A HREF="#toc2">Obtendo o Buildroot</A>
+    <UL>
+    <LI><A HREF="#toc3">2.1. Usando versionamento com GIT</A>
+      <UL>
+      <LI><A HREF="#toc4">2.1.1. Adicionando o diretório dl/ no repositório</A>
+      </UL>
+    </UL>
+  <LI><A HREF="#toc5">Preparando o Buildroot para compilar para um alvo específico</A>
+    <UL>
+    <LI><A HREF="#toc6">3.1. Compilação e Outputs</A>
+    </UL>
+  <LI><A HREF="#toc7">Emulando com QEMU</A>
+  </OL>
+
+<P></P>
+<HR NOSHADE SIZE=1>
+<P></P>
+
+<A NAME="toc1"></A>
+<H1>1. Introdução</H1>
+
+<P>
+Este tutorial contêm o processo básico para construir uma distribuição Linux para emulação com QEMU, baseado
+no Buildroot. O Buildroot é um conjunto de Makefiles e patches que tem como objetivo facilitar a geração de distribuições
+para sistemas Linux. 
+</P>
+<P>
+Neste tutorial serão efetuados os seguintes passos:
+</P>
+
+<OL>
+<LI>Obtenção do Buildroot.
+ <OL>
+ <LI>Versionamento dos fontes com GIT.
+ </OL>
+<LI>Geração da distribuição para a plataforma alvo. 
+<LI>Execução com QEMU.
+</OL>
+
+<A NAME="toc2"></A>
+<H1>2. Obtendo o Buildroot</H1>
+
+<P>
+Primeiramente, criaremos um diretório de trabalho denominado linuxdistro em seu diretório Home. De agora em diante, todos os passos serão executados neste diretório. 
+</P>
+
+<PRE>
+  $ mkdir linuxdistro
+  $ cd linuxdistro
+</PRE>
+
+<P>
+Faça download da versão 2018.02.4 do Buildroot:
+</P>
+
+<PRE>
+  $ wget https://buildroot.org/downloads/buildroot-2018.02.4.tar.gz
+</PRE>
+
+<P>
+Maiores informações (assim como outras versões) podem ser encontradas no site oficial:
+</P>
+
+<PRE>
+  https://buildroot.uclibc.org/download.html
+</PRE>
+
+<P>
+Descompacte o arquivo baixado para o diretório linuxdistro/.
+</P>
+
+<PRE>
+  $ tar -zxvf buildroot-2018.02.4.tar.gz
+</PRE>
+
+<P>
+Renomeie o diretório criado para buildroot/.
+</P>
+
+<PRE>
+  $ mv buildroot-2018.02.4/ buildroot/
+</PRE>
+
+<A NAME="toc3"></A>
+<H2>2.1. Usando versionamento com GIT</H2>
+
+<P>
+Este passo é opcional, ou seja, não é necessário versionar os fontes para executar o Linux no QEMU. Contudo, é uma boa prática manter o controle dos fontes através de alguma ferramenta de versionamento. Assim, será possível saber todas as modificações ocorridas nos fontes e desfazê-las quando necessário. Em nossas aulas, usaremos o GIT como ferramenta de controle de versões.
+</P>
+<P>
+No diretório buildroot/, inicialize o diretório que será versionado:
+</P>
+
+<PRE>
+  $ git init
+</PRE>
+
+<P>
+Agora, adicione todos os fontes e subdiretórios do diretório que será versionado.
+</P>
+
+<PRE>
+  $ git add .
+</PRE>
+
+<P>
+Finalmente, comite uma versão inicial.
+</P>
+
+<PRE>
+  $ git commit -m "Tutorial 1.1 - First commit"
+</PRE>
+
+<P>
+Neste último passo o comando <I>-m</I> e a mensagem de commit podem ser ignorados. Nesse caso, um editor será aberto para que seja digitada a mensagem de commit (motivo/alteração que gerou o commit). Escreva a mensagem, salve (CTRL+O, ENTER) e saia (CTRL+X).
+</P>
+<P>
+Os comits são salvos localmente. Ainda precisamos colocar os fontes em algum repositório na núvem para garantir que tenhamos um sistema de controle de fontes completo (com backup na núvem e que permita desenvolvimento distribuído). Você pode criar uma conta em algum sistema de versionamento na núvem como Github ou Bitbucket. 
+</P>
+<P>
+Com o repositório remoto configurado, devemos fazer upload dos fontes para ele. Assim, garantimos um backup remoto de todo o trabalho realizado na árvore de fontes, e ainda, permitindo compartilhamento 
+dos fontes quando desejável. Para isso, adicione o endereço do repositório remoto:
+</P>
+
+<PRE>
+  $ git remote add &lt;nome_do_repositório&gt; &lt;url_do_repositório&gt;
+</PRE>
+
+<P>
+Agora, faça <I>push</I> (envio) dos fontes para o repositório na núvem.
+</P>
+
+<PRE>
+  $ git push &lt;nome_do_repositório&gt; master:master
+</PRE>
+
+<P>
+No comando acima, o branch master será enviado para o branch master do repositório dado em &lt;nome_do_repositório&gt;.
+</P>
+
+<A NAME="toc4"></A>
+<H3>2.1.1. Adicionando o diretório dl/ no repositório</H3>
+
+<P>
+Durante o processo de compilação, os pacotes de fontes necessários são baixados e instalados no diretório <I>buildroot/dl/</I>. Algumas vezes, alguns dos repositórios apresentam lentidão para download. Uma alternativa é, depois do término da primeira compilação, adicionar o diretório <I>dl/</I> ao controle de versionamento. Assim, fazeremos commit dos pacotes de fontes em nosso repositório na núvem, sem a necessidade utilizar repositórios de terceiros.
+</P>
+<P>
+O diretório <I>buildroot/dl/</I> esta na lista de arquivos ignorados pelo GIT (<I>.gitignore</I>). Assim, abra o arquivo <I>.gitignore</I> no diretório <I>buildroot/</I> e apague a linha <I>dl/</I>. Agora basta adicionar
+os pacotes de fontes e realizar <I>commit</I> e <I>push</I> para o servidor remoto. 
+</P>
+
+<A NAME="toc5"></A>
+<H1>3. Preparando o Buildroot para compilar para um alvo específico</H1>
+
+<P>
+O Buildroot pode gerar distribuições Linux para diferentes plataformas (x86, x86-64, MIPS, ARM...). Em nossas aulas usaremos a plataforma x86.
+</P>
+<P>
+Vá para diretório buildroot/ e execute o comando abaixo. Este comando irá configurar o Buildroot para gerar uma distribuição Linux para emulação com o QEMU. Veja o diretório configs/ para ter uma ideia das outras plataformas e configurações 
+disponíveis. 
+</P>
+
+<PRE>
+  $ make qemu_x86_defconfig
+</PRE>
+
+<P>
+O comando acima aplica a configuração padrão, contudo, iremos customizar algumas características do Linux kernel e da distribuição. Para isso, entre na interface de configuração do Buildroot: 
+</P>
+
+<PRE>
+  $ make menuconfig
+</PRE>
+
+<P>
+Navegue nos menus, conforme mostrado abaixo, apague a opção de DHCP e configure a porta TTY para ttyS0.
+</P>
+
+<PRE>
+  System configuration  ---&gt; 
+  	 ()  Network interface to configure through DHCP
+  	 [*] Run a getty (login prompt) after boot  ---&gt;
+  		  (ttyS0) TTY port
+</PRE>
+
+<P>
+Saia do menu de configurações salvando as opções.
+</P>
+<P>
+Entre no menu de configurações do kernel Linux.
+</P>
+
+<PRE>
+  $ make linux-menuconfig
+</PRE>
+
+<P>
+Se o comando falhar em função de algum problema com um certificado de segurança, execute novamente o comando <I>make menuconfig</I> para reconfigurar o Buildroot. Dessa vez, modifique os parâmetros passados ao comando <I>wget</I> adicionando a flag <I>--no-check-certificate</I> no menu Build options -&gt; Commands -&gt; Wget. Não esqueça de salvar as opções antes de sair e executar o comando <I>make linux-menuconfig</I> novamente.
+</P>
+<P>
+Habilite o driver Ethernet e1000, conforme mostrado abaixo.
+</P>
+
+<PRE>
+  Device Drivers  ---&gt; 
+  	[*] Network device support  ---&gt;    
+  		[*]   Ethernet driver support  ---&gt; 
+  		&lt;*&gt;     Intel(R) PRO/1000 Gigabit Ethernet support 
+</PRE>
+
+<P>
+Saia do menu de configurações salvando as opções.
+</P>
+
+<A NAME="toc6"></A>
+<H2>3.1. Compilação e Outputs</H2>
+
+<P>
+No diretório buildroot/, execute o comando make.
+</P>
+
+<PRE>
+  $ make
+</PRE>
+
+<P>
+O tempo desta operação dependerá da máquina host utilizada e das configurações escolhidas.
+</P>
+
+<UL>
+<LI>Compilador para cross-compilar para a arquitetura alvo em $TOPDIR/output/toolchain/ (apenas quando houver cross-compilação).
+<LI>Descompacta, configura e compila todos os pacotes selecionados usando o compilador gerado =&gt; $TOPDIR/output/build/&lt;package&gt;-&lt;version&gt;
+<LI>Instala os pacotes compilados para =&gt; $TOPDIR/output/target
+<LI>Cria o sistema de arquivos raiz (root) =&gt; $TOPDIR/output/images/rootfs.ext2.
+<P></P>
+Experimente montar a imagem do sistema de arquivo em sua máquina alvo:
+<P></P>
+
+<PRE>
+  $ mount -o loop output/images/rootfs.ext2 ../rootfs/
+</PRE>
+
+<P></P>
+<LI>Gera a imagem do Kernel =&gt; $TOPDIR/output/images/bzImage
+</UL>
+
+<A NAME="toc7"></A>
+<H1>4. Emulando com QEMU</H1>
+
+<P>
+Caso o comando qemu-system-i386 não seja encontrado, será necessário instalar o QEMU no sistema (isso precisa ser feito apenas uma vez):
+</P>
+
+<PRE>
+  $ sudo apt-get install qemu-system
+</PRE>
+
+<P>
+No diretório linuxdistro/ execute o comando abaixo para emular a distribuição recém compilada. 
+</P>
+
+<PRE>
+  $ qemu-system-i386 --kernel buildroot/output/images/bzImage --hda buildroot/output/images/rootfs.ext2 --nographic --append "console=ttyS0 root=/dev/sda" 
+</PRE>
+
+<P>
+Para encerrar o QEMU, abra outro terminal e execute:
+</P>
+
+<PRE>
+  $ killall qemu-system-i386
+</PRE>
+
+<P>
+Escrito por Carlos R. Moratelli, atualizado por Sérgio Johann Filho em Thu Aug 23 13:55:59 2018.
+</P>
+
+<!-- html code generated by txt2tags 2.6 (http://txt2tags.org) -->
+<!-- cmdline: txt2tags -t html 1.1 - buildroot.txt -->
+</BODY></HTML>
+j�@B	�      _v.�_v.�B+A�      8    :https://doc-0s-90-docs.googleusercontent.com/docs/securesc/6bs14r008mpnecg4djjmths2vos5s6lb/lm1hr5nv9ml4m5hbdfkl0aq5vo7a7kho/1601580675000/07425139051799981007/11360291419411613126Z/1QGiZRnMkExShduROc-iDF-HsMa3bKCvK?e=download&nonce=8h1pnk06vd3sc&user=11360291419411613126Z&hash=kfdduispjclrbih7c0m88pe1qeqfsvt4 necko:classified 1 strongly-framed 1 security-info FnhllAKWRHGAlo+ESXykKAAAAAAAAAAAwAAAAAAAAEaphjojH6pBabDSgSnsfLHeAAQAAgAAAAAAAAAAAAAAAAAAAAAB4vFIJp5wRkeyPxAQ9RJGKPqbqVvKO0mKuIl8ec8o/uhmCjImkVxP+7sgiYWmMt8FvcOXmlQiTNWFiWlrbpbqgwAAAAAAAA7MMIIOyDCCDbCgAwIBAgIRAMv7ndTnMNlACAAAAABXoPMwDQYJKoZIhvcNAQELBQAwQjELMAkGA1UEBhMCVVMxHjAcBgNVBAoTFUdvb2dsZSBUcnVzdCBTZXJ2aWNlczETMBEGA1UEAxMKR1RTIENBIDFPMTAeFw0yMDA5MDMwNjQwMTVaFw0yMDExMjYwNjQwMTVaMHExCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQHEw1Nb3VudGFpbiBWaWV3MRMwEQYDVQQKEwpHb29nbGUgTExDMSAwHgYDVQQDDBcqLmdvb2dsZXVzZXJjb250ZW50LmNvbTBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABFLPyT5gZWVAKbhszYovS+8n8EWomvtHw8h/RbjaF4KTgNOzoGpoiGxgoUOOrQlVvf185eWSuwIDwCFssK4QPYSjggxTMIIMTzAOBgNVHQ8BAf8EBAMCB4AwEwYDVR0lBAwwCgYIKwYBBQUHAwEwDAYDVR0TAQH/BAIwADAdBgNVHQ4EFgQUqH1XLBsHcTlX4slUmMEhiDiC7jcwHwYDVR0jBBgwFoAUmNH4bhDrz5vsYJ8YkBug630J/SswaAYIKwYBBQUHAQEEXDBaMCsGCCsGAQUFBzABhh9odHRwOi8vb2NzcC5wa2kuZ29vZy9ndHMxbzFjb3JlMCsGCCsGAQUFBzAChh9odHRwOi8vcGtpLmdvb2cvZ3NyMi9HVFMxTzEuY3J0MIIKDgYDVR0RBIIKBTCCCgGCFyouZ29vZ2xldXNlcmNvbnRlbnQuY29tghwqLmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tgiQqLmFwcHNwb3QuY29tLnN0b3JhZ2UuZ29vZ2xlYXBpcy5jb22CPSouYXVkaW9ib29rLWFkZGl0aW9uYWwtbWF0ZXJpYWwtc3RhZ2luZy5nb29nbGV1c2VyY29udGVudC5jb22CNSouYXVkaW9ib29rLWFkZGl0aW9uYWwtbWF0ZXJpYWwuZ29vZ2xldXNlcmNvbnRlbnQuY29tgg4qLmJsb2dzcG90LmNvbYIRKi5icC5ibG9nc3BvdC5jb22CIiouY29tbW9uZGF0YXN0b3JhZ2UuZ29vZ2xlYXBpcy5jb22CJCouY29tcG9zZXItZGV2Lmdvb2dsZXVzZXJjb250ZW50LmNvbYIjKi5jb21wb3Nlci1xYS5nb29nbGV1c2VyY29udGVudC5jb22CKCouY29tcG9zZXItc3RhZ2luZy5nb29nbGV1c2VyY29udGVudC5jb22CICouY29tcG9zZXIuZ29vZ2xldXNlcmNvbnRlbnQuY29tgikqLmNvbnRlbnQtc3RvcmFnZS1kb3dubG9hZC5nb29nbGVhcGlzLmNvbYInKi5jb250ZW50LXN0b3JhZ2UtdXBsb2FkLmdvb2dsZWFwaXMuY29tgiAqLmNvbnRlbnQtc3RvcmFnZS5nb29nbGVhcGlzLmNvbYIqKi5kYXRhZnVzaW9uLWFwaS1kZXYuZ29vZ2xldXNlcmNvbnRlbnQuY29tgi4qLmRhdGFmdXNpb24tYXBpLXN0YWdpbmcuZ29vZ2xldXNlcmNvbnRlbnQuY29tgiYqLmRhdGFmdXNpb24tYXBpLmdvb2dsZXVzZXJjb250ZW50LmNvbYImKi5kYXRhZnVzaW9uLWRldi5nb29nbGV1c2VyY29udGVudC5jb22CKiouZGF0YWZ1c2lvbi1zdGFnaW5nLmdvb2dsZXVzZXJjb250ZW50LmNvbYIiKi5kYXRhZnVzaW9uLmdvb2dsZXVzZXJjb250ZW50LmNvbYIoKi5kYXRhcHJvYy1zdGFnaW5nLmdvb2dsZXVzZXJjb250ZW50LmNvbYIlKi5kYXRhcHJvYy10ZXN0Lmdvb2dsZXVzZXJjb250ZW50LmNvbYIgKi5kYXRhcHJvYy5nb29nbGV1c2VyY29udGVudC5jb22CJCouZGV2LmFtcDRtYWlsLmdvb2dsZXVzZXJjb250ZW50LmNvbYIcKi5kb3VibGVjbGlja3VzZXJjb250ZW50LmNvbYI1Ki5mdWNoc2lhLXVwZGF0ZXMtYXV0b3B1c2gtcXVhbC5nb29nbGV1c2VyY29udGVudC5jb22CMCouZnVjaHNpYS11cGRhdGVzLWF1dG9wdXNoLmdvb2dsZXVzZXJjb250ZW50LmNvbYIrKi5mdWNoc2lhLXVwZGF0ZXMtZGV2Lmdvb2dsZXVzZXJjb250ZW50LmNvbYIvKi5mdWNoc2lhLXVwZGF0ZXMtc3RhZ2luZy5nb29nbGV1c2VyY29udGVudC5jb22CJyouZnVjaHNpYS11cGRhdGVzLmdvb2dsZXVzZXJjb250ZW50LmNvbYIbKi5nY2MuZ29vZ2xldXNlcmNvbnRlbnQuY29tggsqLmdncGh0LmNvbYIRKi5nb29nbGVkcml2ZS5jb22CFyouZ29vZ2xlc3luZGljYXRpb24uY29tghQqLmdvb2dsZXdlYmxpZ2h0LmNvbYIbKi5nc2MuZ29vZ2xldXNlcmNvbnRlbnQuY29tgiEqLm5vdGVib29rcy5nb29nbGV1c2VyY29udGVudC5jb22CISoucGlwZWxpbmVzLmdvb2dsZXVzZXJjb250ZW50LmNvbYI0Ki5wbGF5Z3JvdW5kLWludGVybmFsLmFtcDRtYWlsLmdvb2dsZXVzZXJjb250ZW50LmNvbYIrKi5wbGF5Z3JvdW5kLmFtcDRtYWlsLmdvb2dsZXVzZXJjb250ZW50LmNvbYIlKi5wcm9kLmFtcDRtYWlsLmdvb2dsZXVzZXJjb250ZW50LmNvbYIhKi5zYWZlZnJhbWUuZ29vZ2xlc3luZGljYXRpb24uY29tgh8qLnNhZmVudXAuZ29vZ2xldXNlcmNvbnRlbnQuY29tgh8qLnNhbmRib3guZ29vZ2xldXNlcmNvbnRlbnQuY29tgiEqLnN0b3JhZ2UtZG93bmxvYWQuZ29vZ2xlYXBpcy5jb22CHyouc3RvcmFnZS11cGxvYWQuZ29vZ2xlYXBpcy5jb22CGCouc3RvcmFnZS5nb29nbGVhcGlzLmNvbYIQKi50cmFuc2xhdGUuZ29vZ4IkKi50dWYtYXV0b3B1c2guZ29vZ2xldXNlcmNvbnRlbnQuY29tgh8qLnR1Zi1kZXYuZ29vZ2xldXNlcmNvbnRlbnQuY29tgiMqLnR1Zi1zdGFnaW5nLmdvb2dsZXVzZXJjb250ZW50LmNvbYIbKi50dWYuZ29vZ2xldXNlcmNvbnRlbnQuY29tggxibG9nc3BvdC5jb22CD2JwLmJsb2dzcG90LmNvbYIgY29tbW9uZGF0YXN0b3JhZ2UuZ29vZ2xlYXBpcy5jb22CGmRvdWJsZWNsaWNrdXNlcmNvbnRlbnQuY29tgglnZ3BodC5jb22CD2dvb2dsZWRyaXZlLmNvbYIVZ29vZ2xldXNlcmNvbnRlbnQuY29tghJnb29nbGV3ZWJsaWdodC5jb22CJW1hbmlmZXN0LmMubWFpbC5nb29nbGV1c2VyY29udGVudC5jb22CJW1hbmlmZXN0LmxoMy1kYS5nb29nbGV1c2VyY29udGVudC5jb22CJW1hbmlmZXN0LmxoMy1kYi5nb29nbGV1c2VyY29udGVudC5jb22CJW1hbmlmZXN0LmxoMy1kYy5nb29nbGV1c2VyY29udGVudC5jb22CJW1hbmlmZXN0LmxoMy1kZC5nb29nbGV1c2VyY29udGVudC5jb22CJW1hbmlmZXN0LmxoMy1kZS5nb29nbGV1c2VyY29udGVudC5jb22CJW1hbmlmZXN0LmxoMy1kZi5nb29nbGV1c2VyY29udGVudC5jb22CJW1hbmlmZXN0LmxoMy1kZy5nb29nbGV1c2VyY29udGVudC5jb22CJW1hbmlmZXN0LmxoMy1kei5nb29nbGV1c2VyY29udGVudC5jb22CIm1hbmlmZXN0LmxoMy5nb29nbGV1c2VyY29udGVudC5jb22CHm1hbmlmZXN0LmxoMy5waG90b3MuZ29vZ2xlLmNvbYIWc3RvcmFnZS5nb29nbGVhcGlzLmNvbYIOdHJhbnNsYXRlLmdvb2eCD3VuZmlsdGVyZWQubmV3czAhBgNVHSAEGjAYMAgGBmeBDAECAjAMBgorBgEEAdZ5AgUDMDMGA1UdHwQsMCowKKAmoCSGImh0dHA6Ly9jcmwucGtpLmdvb2cvR1RTMU8xY29yZS5jcmwwggEEBgorBgEEAdZ5AgQCBIH1BIHyAPAAdgAHt1wb5X1o//Gwxh0jFce65ld8V5S3au68YToaadOiHAAAAXRS6PmlAAAEAwBHMEUCIA3UHI0nwEmjAt18gYxfzSUlEg82lf0H+B4yCsx2dyhLAiEA9qmceY7ThhWE5xmE8XTrODjkTPvOduMHUee0wquvCocAdgDnEvKwN34aYvuOyQxhhPHqezfLVh0RJlvz4PNL8kFUbgAAAXRS6Pl5AAAEAwBHMEUCIQCcmmD48h83gqtWwRb3A/b1hQ5TcO202Y+6zxjnfpWVWQIgbBApyuw4Fbllq2Yz13iLaTHm1HPfhAXIr/VUFNDZmi4wDQYJKoZIhvcNAQELBQADggEBABrHezCrTq72QcA8LJoXKTZfBVV8KXa/F8xU0jQD69YvTNNxBcXHPIyZObMpDkzdvpk/sS3CRAOIpAAmyRxeZlSvJyoAKLuBUz667E3SD1KI9k1i2xrUUZLfZMMOStVMCKjRqrMMpDECtKAuqBrr4OdL0ktOAfortn3mxXn74DSrhHDkutFKSo68w7DZVAemXL4TNzMoFOrcTaclCzVUZPgle7ajfq+QKh4yL+CL2l/xiPzb4QqsAmkS5DBNOQgfmH0SaQ1xh2qMJzP3LRFySSXAvj3CV17jJ/y0DdcN1VUycHCys+ji7mC0fiKClodvflhPY913uKBGxtTR9jnqECvAKwMDAAAAAAEBAAAAAAAABngyNTUxOQAAABFFQ0RTQS1QMjU2LVNIQTI1NgGVn7FlZRdIf6ub2JE75TGXrnTNpc0vRz+W9fC3//YsaAAAAANmCjImkVxP+7sgiYWmMt8FvcOXmlQiTNWFiWlrbpbqgwAAAAAAAA7MMIIOyDCCDbCgAwIBAgIRAMv7ndTnMNlACAAAAABXoPMwDQYJKoZIhvcNAQELBQAwQjELMAkGA1UEBhMCVVMxHjAcBgNVBAoTFUdvb2dsZSBUcnVzdCBTZXJ2aWNlczETMBEGA1UEAxMKR1RTIENBIDFPMTAeFw0yMDA5MDMwNjQwMTVaFw0yMDExMjYwNjQwMTVaMHExCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQHEw1Nb3VudGFpbiBWaWV3MRMwEQYDVQQKEwpHb29nbGUgTExDMSAwHgYDVQQDDBcqLmdvb2dsZXVzZXJjb250ZW50LmNvbTBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABFLPyT5gZWVAKbhszYovS+8n8EWomvtHw8h/RbjaF4KTgNOzoGpoiGxgoUOOrQlVvf185eWSuwIDwCFssK4QPYSjggxTMIIMTzAOBgNVHQ8BAf8EBAMCB4AwEwYDVR0lBAwwCgYIKwYBBQUHAwEwDAYDVR0TAQH/BAIwADAdBgNVHQ4EFgQUqH1XLBsHcTlX4slUmMEhiDiC7jcwHwYDVR0jBBgwFoAUmNH4bhDrz5vsYJ8YkBug630J/SswaAYIKwYBBQUHAQEEXDBaMCsGCCsGAQUFBzABhh9odHRwOi8vb2NzcC5wa2kuZ29vZy9ndHMxbzFjb3JlMCsGCCsGAQUFBzAChh9odHRwOi8vcGtpLmdvb2cvZ3NyMi9HVFMxTzEuY3J0MIIKDgYDVR0RBIIKBTCCCgGCFyouZ29vZ2xldXNlcmNvbnRlbnQuY29tghwqLmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tgiQqLmFwcHNwb3QuY29tLnN0b3JhZ2UuZ29vZ2xlYXBpcy5jb22CPSouYXVkaW9ib29rLWFkZGl0aW9uYWwtbWF0ZXJpYWwtc3RhZ2luZy5nb29nbGV1c2VyY29udGVudC5jb22CNSouYXVkaW9ib29rLWFkZGl0aW9uYWwtbWF0ZXJpYWwuZ29vZ2xldXNlcmNvbnRlbnQuY29tgg4qLmJsb2dzcG90LmNvbYIRKi5icC5ibG9nc3BvdC5jb22CIiouY29tbW9uZGF0YXN0b3JhZ2UuZ29vZ2xlYXBpcy5jb22CJCouY29tcG9zZXItZGV2Lmdvb2dsZXVzZXJjb250ZW50LmNvbYIjKi5jb21wb3Nlci1xYS5nb29nbGV1c2VyY29udGVudC5jb22CKCouY29tcG9zZXItc3RhZ2luZy5nb29nbGV1c2VyY29udGVudC5jb22CICouY29tcG9zZXIuZ29vZ2xldXNlcmNvbnRlbnQuY29tgikqLmNvbnRlbnQtc3RvcmFnZS1kb3dubG9hZC5nb29nbGVhcGlzLmNvbYInKi5jb250ZW50LXN0b3JhZ2UtdXBsb2FkLmdvb2dsZWFwaXMuY29tgiAqLmNvbnRlbnQtc3RvcmFnZS5nb29nbGVhcGlzLmNvbYIqKi5kYXRhZnVzaW9uLWFwaS1kZXYuZ29vZ2xldXNlcmNvbnRlbnQuY29tgi4qLmRhdGFmdXNpb24tYXBpLXN0YWdpbmcuZ29vZ2xldXNlcmNvbnRlbnQuY29tgiYqLmRhdGFmdXNpb24tYXBpLmdvb2dsZXVzZXJjb250ZW50LmNvbYImKi5kYXRhZnVzaW9uLWRldi5nb29nbGV1c2VyY29udGVudC5jb22CKiouZGF0YWZ1c2lvbi1zdGFnaW5nLmdvb2dsZXVzZXJjb250ZW50LmNvbYIiKi5kYXRhZnVzaW9uLmdvb2dsZXVzZXJjb250ZW50LmNvbYIoKi5kYXRhcHJvYy1zdGFnaW5nLmdvb2dsZXVzZXJjb250ZW50LmNvbYIlKi5kYXRhcHJvYy10ZXN0Lmdvb2dsZXVzZXJjb250ZW50LmNvbYIgKi5kYXRhcHJvYy5nb29nbGV1c2VyY29udGVudC5jb22CJCouZGV2LmFtcDRtYWlsLmdvb2dsZXVzZXJjb250ZW50LmNvbYIcKi5kb3VibGVjbGlja3VzZXJjb250ZW50LmNvbYI1Ki5mdWNoc2lhLXVwZGF0ZXMtYXV0b3B1c2gtcXVhbC5nb29nbGV1c2VyY29udGVudC5jb22CMCouZnVjaHNpYS11cGRhdGVzLWF1dG9wdXNoLmdvb2dsZXVzZXJjb250ZW50LmNvbYIrKi5mdWNoc2lhLXVwZGF0ZXMtZGV2Lmdvb2dsZXVzZXJjb250ZW50LmNvbYIvKi5mdWNoc2lhLXVwZGF0ZXMtc3RhZ2luZy5nb29nbGV1c2VyY29udGVudC5jb22CJyouZnVjaHNpYS11cGRhdGVzLmdvb2dsZXVzZXJjb250ZW50LmNvbYIbKi5nY2MuZ29vZ2xldXNlcmNvbnRlbnQuY29tggsqLmdncGh0LmNvbYIRKi5nb29nbGVkcml2ZS5jb22CFyouZ29vZ2xlc3luZGljYXRpb24uY29tghQqLmdvb2dsZXdlYmxpZ2h0LmNvbYIbKi5nc2MuZ29vZ2xldXNlcmNvbnRlbnQuY29tgiEqLm5vdGVib29rcy5nb29nbGV1c2VyY29udGVudC5jb22CISoucGlwZWxpbmVzLmdvb2dsZXVzZXJjb250ZW50LmNvbYI0Ki5wbGF5Z3JvdW5kLWludGVybmFsLmFtcDRtYWlsLmdvb2dsZXVzZXJjb250ZW50LmNvbYIrKi5wbGF5Z3JvdW5kLmFtcDRtYWlsLmdvb2dsZXVzZXJjb250ZW50LmNvbYIlKi5wcm9kLmFtcDRtYWlsLmdvb2dsZXVzZXJjb250ZW50LmNvbYIhKi5zYWZlZnJhbWUuZ29vZ2xlc3luZGljYXRpb24uY29tgh8qLnNhZmVudXAuZ29vZ2xldXNlcmNvbnRlbnQuY29tgh8qLnNhbmRib3guZ29vZ2xldXNlcmNvbnRlbnQuY29tgiEqLnN0b3JhZ2UtZG93bmxvYWQuZ29vZ2xlYXBpcy5jb22CHyouc3RvcmFnZS11cGxvYWQuZ29vZ2xlYXBpcy5jb22CGCouc3RvcmFnZS5nb29nbGVhcGlzLmNvbYIQKi50cmFuc2xhdGUuZ29vZ4IkKi50dWYtYXV0b3B1c2guZ29vZ2xldXNlcmNvbnRlbnQuY29tgh8qLnR1Zi1kZXYuZ29vZ2xldXNlcmNvbnRlbnQuY29tgiMqLnR1Zi1zdGFnaW5nLmdvb2dsZXVzZXJjb250ZW50LmNvbYIbKi50dWYuZ29vZ2xldXNlcmNvbnRlbnQuY29tggxibG9nc3BvdC5jb22CD2JwLmJsb2dzcG90LmNvbYIgY29tbW9uZGF0YXN0b3JhZ2UuZ29vZ2xlYXBpcy5jb22CGmRvdWJsZWNsaWNrdXNlcmNvbnRlbnQuY29tgglnZ3BodC5jb22CD2dvb2dsZWRyaXZlLmNvbYIVZ29vZ2xldXNlcmNvbnRlbnQuY29tghJnb29nbGV3ZWJsaWdodC5jb22CJW1hbmlmZXN0LmMubWFpbC5nb29nbGV1c2VyY29udGVudC5jb22CJW1hbmlmZXN0LmxoMy1kYS5nb29nbGV1c2VyY29udGVudC5jb22CJW1hbmlmZXN0LmxoMy1kYi5nb29nbGV1c2VyY29udGVudC5jb22CJW1hbmlmZXN0LmxoMy1kYy5nb29nbGV1c2VyY29udGVudC5jb22CJW1hbmlmZXN0LmxoMy1kZC5nb29nbGV1c2VyY29udGVudC5jb22CJW1hbmlmZXN0LmxoMy1kZS5nb29nbGV1c2VyY29udGVudC5jb22CJW1hbmlmZXN0LmxoMy1kZi5nb29nbGV1c2VyY29udGVudC5jb22CJW1hbmlmZXN0LmxoMy1kZy5nb29nbGV1c2VyY29udGVudC5jb22CJW1hbmlmZXN0LmxoMy1kei5nb29nbGV1c2VyY29udGVudC5jb22CIm1hbmlmZXN0LmxoMy5nb29nbGV1c2VyY29udGVudC5jb22CHm1hbmlmZXN0LmxoMy5waG90b3MuZ29vZ2xlLmNvbYIWc3RvcmFnZS5nb29nbGVhcGlzLmNvbYIOdHJhbnNsYXRlLmdvb2eCD3VuZmls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 request-method GET response-head HTTP/2.0 200 OK
+x-guploader-uploadid: ABg5-UzbCHtpjKnEvFQPedAtj8Y3h2chu5ZUw7Q0gcqd5OQPyzud0j-Lh2dtQ0NVfGZDbdOxmOQa9b3xLLaiDXt_vzg
+access-control-allow-origin: *
+access-control-allow-credentials: false
+access-control-allow-headers: Accept, Accept-Language, Authorization, Cache-Control, Content-Disposition, Content-Encoding, Content-Language, Content-Length, Content-MD5, Content-Range, Content-Type, Date, GData-Version, google-cloud-resource-prefix, x-goog-request-params, Host, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, Origin, OriginToken, Pragma, Range, Slug, Transfer-Encoding, hotrod-board-name, hotrod-chrome-cpu-model, hotrod-chrome-processors, Want-Digest, x-chrome-connected, X-ClientDetails, X-Client-Version, X-Firebase-Locale, X-Goog-Firebase-Installations-Auth, X-Firebase-Client, X-Firebase-Client-Log-Type, X-GData-Client, X-GData-Key, X-GoogApps-Allowed-Domains, X-Goog-AdX-Buyer-Impersonation, X-Goog-Api-Client, X-Goog-AuthUser, x-goog-ext-124712974-jspb, x-goog-ext-251363160-jspb, x-goog-ext-259736195-jspb, X-Goog-PageId, X-Goog-Encode-Response-If-Executable, X-Goog-Correlation-Id, X-Goog-Request-Info, X-Goog-Request-Reason, X-Goog-Experiments, x-goog-iam-authority-selector, x-goog-iam-authorization-token, X-Goog-Spatula, X-Goog-Travel-Bgr, X-Goog-Travel-Settings, X-Goog-Upload-Command, X-Goog-Upload-Content-Disposition, X-Goog-Upload-Content-Length, X-Goog-Upload-Content-Type, X-Goog-Upload-File-Name, X-Goog-Upload-Header-Content-Encoding, X-Goog-Upload-Header-Content-Length, X-Goog-Upload-Header-Content-Type, X-Goog-Upload-Header-Transfer-Encoding, X-Goog-Upload-Offset, X-Goog-Upload-Protocol, x-goog-user-project, X-Goog-Visitor-Id, X-Goog-FieldMask, X-Google-Project-Override, X-Goog-Api-Key, X-HTTP-Method-Override, X-JavaScript-User-Agent, X-Pan-Versionid, X-Proxied-User-IP, X-Origin, X-Referer, X-Requested-With, X-Stadia-Client-Context, X-Upload-Content-Length, X-Upload-Content-Type, X-Use-HTTP-Status-Code-Override, X-Ios-Bundle-Identifier, X-Android-Package, X-Ariane-Xsrf-Token, X-YouTube-VVT, X-YouTube-Page-CL, X-YouTube-Page-Timestamp, X-Compass-Routing-Destination, X-Goog-Meeting-Botguardid, X-Goog-Meeting-ClientInfo, X-Goog-Meeting-ClientVersion, X-Goog-Meeting-Debugid, X-Goog-Meeting-Identifier, X-Goog-Meeting-RtcClient, X-Goog-Meeting-StartSource, X-Goog-Meeting-Token, X-Client-Data, X-Sfdc-Authorization, MIME-Version, Content-Transfer-Encoding, X-Earth-Engine-App-ID-Token, X-Earth-Engine-Computation-Profile, X-Earth-Engine-Computation-Profiling, X-Play-Console-Experiments-Override, X-Play-Console-Session-Id, x-alkali-account-key, x-alkali-application-key, x-alkali-auth-apps-namespace, x-alkali-auth-entities-namespace, x-alkali-auth-entity, x-alkali-client-locale, EES-S7E-MODE, cast-device-capabilities
+access-control-allow-methods: GET,OPTIONS
+p3p: CP="This is not a P3P policy! See http://www.google.com/support/accounts/answer/151657?hl=en for more info."
+content-type: text/html
+content-disposition: attachment;filename="1.1 - buildroot.html";filename*=UTF-8''1.1%20-%20buildroot.html
+date: Thu, 01 Oct 2020 19:31:33 GMT
+expires: Thu, 01 Oct 2020 19:31:33 GMT
+cache-control: private, max-age=0
+x-goog-hash: crc32c=hP9xKQ==
+content-length: 9257
+server: UploadServer
+alt-svc: h3-Q050=":443"; ma=2592000,h3-29=":443"; ma=2592000,h3-27=":443"; ma=2592000,h3-T051=":443"; ma=2592000,h3-T050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"
+X-Firefox-Spdy: h2
+ original-response-headers x-guploader-uploadid: ABg5-UzbCHtpjKnEvFQPedAtj8Y3h2chu5ZUw7Q0gcqd5OQPyzud0j-Lh2dtQ0NVfGZDbdOxmOQa9b3xLLaiDXt_vzg
+access-control-allow-origin: *
+access-control-allow-credentials: false
+access-control-allow-headers: Accept, Accept-Language, Authorization, Cache-Control, Content-Disposition, Content-Encoding, Content-Language, Content-Length, Content-MD5, Content-Range, Content-Type, Date, GData-Version, google-cloud-resource-prefix, x-goog-request-params, Host, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, Origin, OriginToken, Pragma, Range, Slug, Transfer-Encoding, hotrod-board-name, hotrod-chrome-cpu-model, hotrod-chrome-processors, Want-Digest, x-chrome-connected, X-ClientDetails, X-Client-Version, X-Firebase-Locale, X-Goog-Firebase-Installations-Auth, X-Firebase-Client, X-Firebase-Client-Log-Type, X-GData-Client, X-GData-Key, X-GoogApps-Allowed-Domains, X-Goog-AdX-Buyer-Impersonation, X-Goog-Api-Client, X-Goog-AuthUser, x-goog-ext-124712974-jspb, x-goog-ext-251363160-jspb, x-goog-ext-259736195-jspb, X-Goog-PageId, X-Goog-Encode-Response-If-Executable, X-Goog-Correlation-Id, X-Goog-Request-Info, X-Goog-Request-Reason, X-Goog-Experiments, x-goog-iam-authority-selector, x-goog-iam-authorization-token, X-Goog-Spatula, X-Goog-Travel-Bgr, X-Goog-Travel-Settings, X-Goog-Upload-Command, X-Goog-Upload-Content-Disposition, X-Goog-Upload-Content-Length, X-Goog-Upload-Content-Type, X-Goog-Upload-File-Name, X-Goog-Upload-Header-Content-Encoding, X-Goog-Upload-Header-Content-Length, X-Goog-Upload-Header-Content-Type, X-Goog-Upload-Header-Transfer-Encoding, X-Goog-Upload-Offset, X-Goog-Upload-Protocol, x-goog-user-project, X-Goog-Visitor-Id, X-Goog-FieldMask, X-Google-Project-Override, X-Goog-Api-Key, X-HTTP-Method-Override, X-JavaScript-User-Agent, X-Pan-Versionid, X-Proxied-User-IP, X-Origin, X-Referer, X-Requested-With, X-Stadia-Client-Context, X-Upload-Content-Length, X-Upload-Content-Type, X-Use-HTTP-Status-Code-Override, X-Ios-Bundle-Identifier, X-Android-Package, X-Ariane-Xsrf-Token, X-YouTube-VVT, X-YouTube-Page-CL, X-YouTube-Page-Timestamp, X-Compass-Routing-Destination, X-Goog-Meeting-Botguardid, X-Goog-Meeting-ClientInfo, X-Goog-Meeting-ClientVersion, X-Goog-Meeting-Debugid, X-Goog-Meeting-Identifier, X-Goog-Meeting-RtcClient, X-Goog-Meeting-StartSource, X-Goog-Meeting-Token, X-Client-Data, X-Sfdc-Authorization, MIME-Version, Content-Transfer-Encoding, X-Earth-Engine-App-ID-Token, X-Earth-Engine-Computation-Profile, X-Earth-Engine-Computation-Profiling, X-Play-Console-Experiments-Override, X-Play-Console-Session-Id, x-alkali-account-key, x-alkali-application-key, x-alkali-auth-apps-namespace, x-alkali-auth-entities-namespace, x-alkali-auth-entity, x-alkali-client-locale, EES-S7E-MODE, cast-device-capabilities
+access-control-allow-methods: GET,OPTIONS
+p3p: CP="This is not a P3P policy! See http://www.google.com/support/accounts/answer/151657?hl=en for more info."
+content-type: text/html
+content-disposition: attachment;filename="1.1 - buildroot.html";filename*=UTF-8''1.1%20-%20buildroot.html
+date: Thu, 01 Oct 2020 19:31:33 GMT
+expires: Thu, 01 Oct 2020 19:31:33 GMT
+cache-control: private, max-age=0
+x-goog-hash: crc32c=hP9xKQ==
+content-length: 9257
+server: UploadServer
+set-cookie: AUTH_oulmuaunq1cc7t4njg225h15tviotdl1=11360291419411613126Z|1601580675000|826at1r4pf2lm4e8b84u5u6bguvucoaj; Domain=.googleusercontent.com; Expires=Thu, 01-Oct-2020 19:36:33 GMT; Path=/docs/securesc/6bs14r008mpnecg4djjmths2vos5s6lb; Secure; SameSite=none; HttpOnly
+set-cookie: AUTH_oulmuaunq1cc7t4njg225h15tviotdl1_nonce=; Domain=doc-0s-90-docs.googleusercontent.com; Expires=Wed, 30-Sep-2020 19:31:33 GMT; Path=/docs/securesc/6bs14r008mpnecg4djjmths2vos5s6lb; Secure; SameSite=none; HttpOnly
+alt-svc: h3-Q050=":443"; ma=2592000,h3-29=":443"; ma=2592000,h3-27=":443"; ma=2592000,h3-T051=":443"; ma=2592000,h3-T050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"
+X-Firefox-Spdy: h2
+ uncompressed-len 0 net-response-time-onstart 351 net-response-time-onstop 356   $)

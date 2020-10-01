@@ -1,0 +1,6 @@
+Looking at Module: libapplication.so
+Signal: Entry Added
+gtk_distribute_natural_allocation: assertion 'extra_space >= 0' failed
+Signal: Entry Added
+Building new application entry: :1.40  with icon: nm-device-wired at position 0
+Generating properties error for: 134

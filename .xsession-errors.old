@@ -1,0 +1,105 @@
+dbus-update-activation-environment: setting DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1001/bus
+dbus-update-activation-environment: setting DISPLAY=:0
+dbus-update-activation-environment: setting XAUTHORITY=/home/aluno/.Xauthority
+dbus-update-activation-environment: setting GTK_MODULES=appmenu-gtk-module:gail:atk-bridge:canberra-gtk-module
+dbus-update-activation-environment: setting QT_ACCESSIBILITY=1
+dbus-update-activation-environment: setting CLUTTER_IM_MODULE=xim
+dbus-update-activation-environment: setting LANG=pt_BR.UTF-8
+dbus-update-activation-environment: setting GDM_LANG=pt_BR
+dbus-update-activation-environment: setting DISPLAY=:0
+dbus-update-activation-environment: setting COMPIZ_CONFIG_PROFILE=mate
+dbus-update-activation-environment: setting GTK_OVERLAY_SCROLLING=0
+dbus-update-activation-environment: setting XDG_GREETER_DATA_DIR=/var/lib/lightdm-data/aluno
+dbus-update-activation-environment: setting USER=aluno
+dbus-update-activation-environment: setting DESKTOP_SESSION=mate
+dbus-update-activation-environment: setting QT4_IM_MODULE=xim
+dbus-update-activation-environment: setting TEXTDOMAINDIR=/usr/share/locale/
+dbus-update-activation-environment: setting QT_QPA_PLATFORMTHEME=gtk2
+dbus-update-activation-environment: setting PWD=/home/aluno
+dbus-update-activation-environment: setting HOME=/home/aluno
+dbus-update-activation-environment: setting TEXTDOMAIN=im-config
+dbus-update-activation-environment: setting QT_ACCESSIBILITY=1
+dbus-update-activation-environment: setting XDG_SESSION_TYPE=x11
+dbus-update-activation-environment: setting XDG_DATA_DIRS=/usr/share/mate:/usr/share/mate:/usr/local/share:/usr/share:/var/lib/snapd/desktop
+dbus-update-activation-environment: setting XDG_SESSION_DESKTOP=mate
+dbus-update-activation-environment: setting GTK_MODULES=appmenu-gtk-module:gail:atk-bridge:canberra-gtk-module
+dbus-update-activation-environment: setting UBUNTU_MENUPROXY=1
+dbus-update-activation-environment: setting SHELL=/bin/bash
+dbus-update-activation-environment: setting XDG_SEAT_PATH=/org/freedesktop/DisplayManager/Seat0
+dbus-update-activation-environment: setting QT_IM_MODULE=ibus
+dbus-update-activation-environment: setting XMODIFIERS=@im=ibus
+dbus-update-activation-environment: setting IM_CONFIG_PHASE=2
+dbus-update-activation-environment: setting XDG_CURRENT_DESKTOP=MATE
+dbus-update-activation-environment: setting GPG_AGENT_INFO=/run/user/1001/gnupg/S.gpg-agent:0:1
+dbus-update-activation-environment: setting SHLVL=1
+dbus-update-activation-environment: setting LANGUAGE=pt_BR:pt:en
+dbus-update-activation-environment: setting GDMSESSION=mate
+dbus-update-activation-environment: setting LOGNAME=aluno
+dbus-update-activation-environment: setting DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1001/bus
+dbus-update-activation-environment: setting XDG_RUNTIME_DIR=/run/user/1001
+dbus-update-activation-environment: setting XAUTHORITY=/home/aluno/.Xauthority
+dbus-update-activation-environment: setting XDG_SESSION_PATH=/org/freedesktop/DisplayManager/Session0
+dbus-update-activation-environment: setting XDG_CONFIG_DIRS=/etc/xdg/xdg-mate:/etc/xdg
+dbus-update-activation-environment: setting PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+dbus-update-activation-environment: setting GTK_IM_MODULE=ibus
+dbus-update-activation-environment: setting _=/usr/bin/dbus-update-activation-environment
+mate-session[1267]: WARNING: Unable to find provider '' of required component 'dock'
+Aviso do gerenciador de janelas: Log level 128: Name com.canonical.AppMenu.Registrar does not exist on the session bus
+
+Aviso do gerenciador de janelas: Log level 16: XPresent is not compatible with your current system configuration.
+
+(process:1865): indicator-sound-WARNING **: 16:14:39.888: volume-control-pulse.vala:744: Unable to connect to dbus server at 'unix:path=/run/user/1001/pulse/dbus-socket': Não foi possível conectar: Arquivo ou diretório inexistente
+
+(process:1865): indicator-sound-WARNING **: 16:14:39.920: accounts-service-access.vala:218: unable to sync volume 1,525223 to AccountsService: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: Nenhuma interface “com.ubuntu.AccountsService.Sound”
+
+** (mate-screensaver:1597): WARNING **: 16:14:39.934: proteção de tela já ativa nesta sessão
+
+(nm-applet:1594): Gtk-WARNING **: 16:14:40.041: Can't set a parent on widget which has a parent
+RuntimeError: object at 0x7ff456a72410 of type RenameMenu is not initialized
+RuntimeError: object at 0x7ff456a5f820 of type FolderColorMenu is not initialized
+INFO:root:The HUD is disabled via org.mate.hud in gsettings.
+/usr/lib/python3/dist-packages/blueman/plugins/applet/AppIndicator.py:8: PyGIWarning: AppIndicator3 was imported without specifying a version first. Use gi.require_version('AppIndicator3', '0.1') before import to ensure that the right version gets loaded.
+  from gi.repository import AppIndicator3 as girAppIndicator
+ERROR:dbus.proxies:Introspect error on org.bluez:/org/bluez: dbus.exceptions.DBusException: org.freedesktop.DBus.Error.TimedOut: Failed to activate service 'org.bluez': timed out (service_start_timeout=25000ms)
+ERROR:dbus.proxies:Introspect error on org.bluez:/: dbus.exceptions.DBusException: org.freedesktop.DBus.Error.TimedOut: Failed to activate service 'org.bluez': timed out (service_start_timeout=25000ms)
+ERROR:dbus.proxies:Introspect error on org.bluez:/: dbus.exceptions.DBusException: org.freedesktop.DBus.Error.TimedOut: Failed to activate service 'org.bluez': timed out (service_start_timeout=25000ms)
+[Child 2235, MediaPlayback #1] WARNING: Decoder=7f661694a4c0 Decode error: NS_ERROR_DOM_MEDIA_FATAL_ERR (0x806e0005) - RefPtr<mozilla::MozPromise<RefPtr<mozilla::MediaTrackDemuxer::SamplesHolder>, mozilla::MediaResult, true> > mozilla::MediaSourceTrackDemuxer::DoGetSamples(int32_t): manager is detached.: file /build/firefox-oscv9o/firefox-61.0.1+build1/dom/media/MediaDecoderStateMachine.cpp, line 3411
+
+###!!! [Parent][DispatchAsyncMessage] Error: PClientSourceOp::Msg___delete__ Route error: message sent to unknown actor ID
+
+
+###!!! [Parent][DispatchAsyncMessage] Error: PClientSourceOp::Msg___delete__ Route error: message sent to unknown actor ID
+
+[Child 2235, MediaPlayback #1] WARNING: Decoder=7f6613c503e0 Decode error: NS_ERROR_DOM_MEDIA_FATAL_ERR (0x806e0005) - RefPtr<mozilla::MozPromise<RefPtr<mozilla::MediaTrackDemuxer::SamplesHolder>, mozilla::MediaResult, true> > mozilla::MediaSourceTrackDemuxer::DoGetSamples(int32_t): manager is detached.: file /build/firefox-oscv9o/firefox-61.0.1+build1/dom/media/MediaDecoderStateMachine.cpp, line 3411
+[Child 2235, MediaPlayback #4] WARNING: Decoder=7f6613c503e0 Decode error: NS_ERROR_DOM_MEDIA_FATAL_ERR (0x806e0005) - RefPtr<mozilla::MozPromise<RefPtr<mozilla::MediaTrackDemuxer::SamplesHolder>, mozilla::MediaResult, true> > mozilla::MediaSourceTrackDemuxer::DoGetSamples(int32_t): manager is detached.: file /build/firefox-oscv9o/firefox-61.0.1+build1/dom/media/MediaDecoderStateMachine.cpp, line 3411
+[Child 2235, MediaPlayback #4] WARNING: Decoder=7f6613c503e0 Decode error: NS_ERROR_DOM_MEDIA_FATAL_ERR (0x806e0005) - RefPtr<mozilla::MozPromise<RefPtr<mozilla::MediaTrackDemuxer::SamplesHolder>, mozilla::MediaResult, true> > mozilla::MediaSourceTrackDemuxer::DoGetSamples(int32_t): manager is detached.: file /build/firefox-oscv9o/firefox-61.0.1+build1/dom/media/MediaDecoderStateMachine.cpp, line 3411
+[Child 2235, MediaPlayback #2] WARNING: Decoder=7f6613c503e0 Decode error: NS_ERROR_DOM_MEDIA_FATAL_ERR (0x806e0005) - RefPtr<mozilla::MozPromise<RefPtr<mozilla::MediaTrackDemuxer::SamplesHolder>, mozilla::MediaResult, true> > mozilla::MediaSourceTrackDemuxer::DoGetSamples(int32_t): manager is detached.: file /build/firefox-oscv9o/firefox-61.0.1+build1/dom/media/MediaDecoderStateMachine.cpp, line 3411
+[Child 2235, MediaPlayback #2] WARNING: Decoder=7f6613c503e0 Decode error: NS_ERROR_DOM_MEDIA_FATAL_ERR (0x806e0005) - RefPtr<mozilla::MozPromise<RefPtr<mozilla::MediaTrackDemuxer::SamplesHolder>, mozilla::MediaResult, true> > mozilla::MediaSourceTrackDemuxer::DoGetSamples(int32_t): manager is detached.: file /build/firefox-oscv9o/firefox-61.0.1+build1/dom/media/MediaDecoderStateMachine.cpp, line 3411
+[Child 2235, MediaPlayback #3] WARNING: Decoder=7f6613c503e0 Decode error: NS_ERROR_DOM_MEDIA_FATAL_ERR (0x806e0005) - RefPtr<mozilla::MozPromise<RefPtr<mozilla::MediaTrackDemuxer::SamplesHolder>, mozilla::MediaResult, true> > mozilla::MediaSourceTrackDemuxer::DoGetSamples(int32_t): manager is detached.: file /build/firefox-oscv9o/firefox-61.0.1+build1/dom/media/MediaDecoderStateMachine.cpp, line 3411
+[Child 2235, MediaPlayback #3] WARNING: Decoder=7f6613c503e0 Decode error: NS_ERROR_DOM_MEDIA_FATAL_ERR (0x806e0005) - RefPtr<mozilla::MozPromise<RefPtr<mozilla::MediaTrackDemuxer::SamplesHolder>, mozilla::MediaResult, true> > mozilla::MediaSourceTrackDemuxer::DoGetSamples(int32_t): manager is detached.: file /build/firefox-oscv9o/firefox-61.0.1+build1/dom/media/MediaDecoderStateMachine.cpp, line 3411
+[Child 2235, MediaPlayback #2] WARNING: Decoder=7f6613c503e0 Decode error: NS_ERROR_DOM_MEDIA_FATAL_ERR (0x806e0005) - RefPtr<mozilla::MozPromise<RefPtr<mozilla::MediaTrackDemuxer::SamplesHolder>, mozilla::MediaResult, true> > mozilla::MediaSourceTrackDemuxer::DoGetSamples(int32_t): manager is detached.: file /build/firefox-oscv9o/firefox-61.0.1+build1/dom/media/MediaDecoderStateMachine.cpp, line 3411
+[Child 2235, MediaPlayback #2] WARNING: Decoder=7f6613c503e0 Decode error: NS_ERROR_DOM_MEDIA_FATAL_ERR (0x806e0005) - RefPtr<mozilla::MozPromise<RefPtr<mozilla::MediaTrackDemuxer::SamplesHolder>, mozilla::MediaResult, true> > mozilla::MediaSourceTrackDemuxer::DoGetSamples(int32_t): manager is detached.: file /build/firefox-oscv9o/firefox-61.0.1+build1/dom/media/MediaDecoderStateMachine.cpp, line 3411
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+[Parent 2050, Gecko_IOThread] WARNING: pipe error (155): Conexão fechada pela outra ponta: file /build/firefox-oscv9o/firefox-61.0.1+build1/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 353
+Gtk-Message: 16:19:15.376: GtkDialog mapped without a transient parent. This is discouraged.
+Aviso do gerenciador de janelas: CurrentTime used to choose focus window; focus window may not be correct.
+Aviso do gerenciador de janelas: Got a request to focus the no_focus_window with a timestamp of 0.  This shouldn't happen!
+Gdk-Message: 16:19:17.114: update-notifier: Fatal IO error 11 (Recurso temporariamente indisponível) on X server :0.
+
+Gdk-Message: 16:19:17.114: mate-maximus: Fatal IO error 11 (Recurso temporariamente indisponível) on X server :0.
+
+Gdk-Message: 16:19:17.114: nm-applet: Fatal IO error 11 (Recurso temporariamente indisponível) on X server :0.
+
+
+(deja-dup-monitor:1862): GVFS-RemoteVolumeMonitor-WARNING **: 16:19:17.158: Owner of volume monitor org.gtk.vfs.GoaVolumeMonitor disconnected from the bus; removing drives/volumes/mounts
+
+(deja-dup-monitor:1862): GVFS-RemoteVolumeMonitor-WARNING **: 16:19:17.162: Owner of volume monitor org.gtk.vfs.MTPVolumeMonitor disconnected from the bus; removing drives/volumes/mounts
+
+(deja-dup-monitor:1862): GVFS-RemoteVolumeMonitor-WARNING **: 16:19:17.169: Owner of volume monitor org.gtk.vfs.GPhoto2VolumeMonitor disconnected from the bus; removing drives/volumes/mounts
+Gdk-Message: 16:19:17.170: mate-session: Fatal IO error 11 (Recurso temporariamente indisponível) on X server :0.
+

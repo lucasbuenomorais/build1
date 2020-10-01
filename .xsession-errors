@@ -1,0 +1,179 @@
+dbus-update-activation-environment: setting DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1001/bus
+dbus-update-activation-environment: setting DISPLAY=:0
+dbus-update-activation-environment: setting XAUTHORITY=/home/aluno/.Xauthority
+dbus-update-activation-environment: setting GTK_MODULES=appmenu-gtk-module:gail:atk-bridge:canberra-gtk-module
+dbus-update-activation-environment: setting QT_ACCESSIBILITY=1
+dbus-update-activation-environment: setting CLUTTER_IM_MODULE=xim
+dbus-update-activation-environment: setting LANG=pt_BR.UTF-8
+dbus-update-activation-environment: setting GDM_LANG=pt_BR
+dbus-update-activation-environment: setting DISPLAY=:0
+dbus-update-activation-environment: setting COMPIZ_CONFIG_PROFILE=mate
+dbus-update-activation-environment: setting GTK_OVERLAY_SCROLLING=0
+dbus-update-activation-environment: setting XDG_GREETER_DATA_DIR=/var/lib/lightdm-data/aluno
+dbus-update-activation-environment: setting USER=aluno
+dbus-update-activation-environment: setting DESKTOP_SESSION=mate
+dbus-update-activation-environment: setting QT4_IM_MODULE=xim
+dbus-update-activation-environment: setting TEXTDOMAINDIR=/usr/share/locale/
+dbus-update-activation-environment: setting QT_QPA_PLATFORMTHEME=gtk2
+dbus-update-activation-environment: setting PWD=/home/aluno
+dbus-update-activation-environment: setting HOME=/home/aluno
+dbus-update-activation-environment: setting TEXTDOMAIN=im-config
+dbus-update-activation-environment: setting QT_ACCESSIBILITY=1
+dbus-update-activation-environment: setting XDG_SESSION_TYPE=x11
+dbus-update-activation-environment: setting XDG_DATA_DIRS=/usr/share/mate:/usr/share/mate:/usr/local/share:/usr/share:/var/lib/snapd/desktop
+dbus-update-activation-environment: setting XDG_SESSION_DESKTOP=mate
+dbus-update-activation-environment: setting GTK_MODULES=appmenu-gtk-module:gail:atk-bridge:canberra-gtk-module
+dbus-update-activation-environment: setting UBUNTU_MENUPROXY=1
+dbus-update-activation-environment: setting SHELL=/bin/bash
+dbus-update-activation-environment: setting XDG_SEAT_PATH=/org/freedesktop/DisplayManager/Seat0
+dbus-update-activation-environment: setting QT_IM_MODULE=ibus
+dbus-update-activation-environment: setting XMODIFIERS=@im=ibus
+dbus-update-activation-environment: setting IM_CONFIG_PHASE=2
+dbus-update-activation-environment: setting XDG_CURRENT_DESKTOP=MATE
+dbus-update-activation-environment: setting GPG_AGENT_INFO=/run/user/1001/gnupg/S.gpg-agent:0:1
+dbus-update-activation-environment: setting SHLVL=1
+dbus-update-activation-environment: setting LANGUAGE=pt_BR:pt:en
+dbus-update-activation-environment: setting GDMSESSION=mate
+dbus-update-activation-environment: setting LOGNAME=aluno
+dbus-update-activation-environment: setting DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1001/bus
+dbus-update-activation-environment: setting XDG_RUNTIME_DIR=/run/user/1001
+dbus-update-activation-environment: setting XAUTHORITY=/home/aluno/.Xauthority
+dbus-update-activation-environment: setting XDG_SESSION_PATH=/org/freedesktop/DisplayManager/Session0
+dbus-update-activation-environment: setting XDG_CONFIG_DIRS=/etc/xdg/xdg-mate:/etc/xdg
+dbus-update-activation-environment: setting PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+dbus-update-activation-environment: setting GTK_IM_MODULE=ibus
+dbus-update-activation-environment: setting _=/usr/bin/dbus-update-activation-environment
+mate-session[1572]: WARNING: Unable to find provider '' of required component 'dock'
+Aviso do gerenciador de janelas: Log level 128: Name com.canonical.AppMenu.Registrar does not exist on the session bus
+
+Aviso do gerenciador de janelas: Log level 16: XPresent is not compatible with your current system configuration.
+
+(process:1911): indicator-sound-WARNING **: 16:28:18.612: volume-control-pulse.vala:744: Unable to connect to dbus server at 'unix:path=/run/user/1001/pulse/dbus-socket': Não foi possível conectar: Arquivo ou diretório inexistente
+
+(process:1911): indicator-sound-WARNING **: 16:28:18.923: accounts-service-access.vala:218: unable to sync volume 1,525223 to AccountsService: GDBus.Error:org.freedesktop.DBus.Error.InvalidArgs: Nenhuma interface “com.ubuntu.AccountsService.Sound”
+
+(nm-applet:1839): Gtk-WARNING **: 16:28:19.648: Can't set a parent on widget which has a parent
+RuntimeError: object at 0x7fe996f1c410 of type RenameMenu is not initialized
+RuntimeError: object at 0x7fe996f09820 of type FolderColorMenu is not initialized
+INFO:root:The HUD is disabled via org.mate.hud in gsettings.
+Gtk-Message: 16:28:32.280: GtkDialog mapped without a transient parent. This is discouraged.
+Aviso do gerenciador de janelas: Buggy client sent a _NET_ACTIVE_WINDOW message with a timestamp of 0 for 0x2c00007 (Autenticar)
+Aviso do gerenciador de janelas: meta_window_activate called by a pager with a 0 timestamp; the pager needs to be fixed.
+/var/lib/dpkg/lock: 
+Gtk-Message: 16:28:40.710: GtkDialog mapped without a transient parent. This is discouraged.
+Aviso do gerenciador de janelas: A janela 0x3800007 (do-release) define uma dica MWM indicando que não é redimensionável, mas define o tamanho mínimo 176 x 222 e máximo 2147483647 x 2147483647; isso não faz muito sentido.
+Aviso do gerenciador de janelas: A janela 0x3800007 (do-release) define uma dica MWM indicando que não é redimensionável, mas define o tamanho mínimo 176 x 222 e máximo 2147483647 x 2147483647; isso não faz muito sentido.
+Gtk-Message: 16:28:45.283: GtkDialog mapped without a transient parent. This is discouraged.
+/usr/lib/python3/dist-packages/blueman/plugins/applet/AppIndicator.py:8: PyGIWarning: AppIndicator3 was imported without specifying a version first. Use gi.require_version('AppIndicator3', '0.1') before import to ensure that the right version gets loaded.
+  from gi.repository import AppIndicator3 as girAppIndicator
+ERROR:dbus.proxies:Introspect error on org.bluez:/org/bluez: dbus.exceptions.DBusException: org.freedesktop.DBus.Error.TimedOut: Failed to activate service 'org.bluez': timed out (service_start_timeout=25000ms)
+ERROR:dbus.proxies:Introspect error on org.bluez:/: dbus.exceptions.DBusException: org.freedesktop.DBus.Error.TimedOut: Failed to activate service 'org.bluez': timed out (service_start_timeout=25000ms)
+ERROR:dbus.proxies:Introspect error on org.bluez:/: dbus.exceptions.DBusException: org.freedesktop.DBus.Error.TimedOut: Failed to activate service 'org.bluez': timed out (service_start_timeout=25000ms)
+/usr/lib/python3/dist-packages/DistUpgrade/DistUpgradeFetcher.py:23: PyGIWarning: Gtk was imported without specifying a version first. Use gi.require_version('Gtk', '3.0') before import to ensure that the right version gets loaded.
+  from gi.repository import Gtk, Gdk
+/usr/lib/python3/dist-packages/DistUpgrade/ReleaseNotesViewerWebkit.py:33: PyGIWarning: WebKit2 was imported without specifying a version first. Use gi.require_version('WebKit2', '4.0') before import to ensure that the right version gets loaded.
+  from gi.repository import WebKit2 as WebKit
+
+(nm-applet:1839): Gtk-CRITICAL **: 16:29:27.599: gtk_widget_destroy: assertion 'GTK_IS_WIDGET (widget)' failed
+
+(nm-applet:1839): Gtk-CRITICAL **: 16:29:27.599: gtk_widget_destroy: assertion 'GTK_IS_WIDGET (widget)' failed
+
+(nm-applet:1839): Gtk-WARNING **: 16:29:27.600: Can't set a parent on widget which has a parent
+
+(nm-applet:1839): Gtk-CRITICAL **: 16:29:27.649: gtk_widget_destroy: assertion 'GTK_IS_WIDGET (widget)' failed
+
+(nm-applet:1839): Gtk-CRITICAL **: 16:29:27.649: gtk_widget_destroy: assertion 'GTK_IS_WIDGET (widget)' failed
+
+(nm-applet:1839): Gtk-WARNING **: 16:29:27.658: Can't set a parent on widget which has a parent
+
+(nm-applet:1839): Gtk-CRITICAL **: 16:29:27.669: gtk_widget_destroy: assertion 'GTK_IS_WIDGET (widget)' failed
+
+(nm-applet:1839): Gtk-CRITICAL **: 16:29:27.669: gtk_widget_destroy: assertion 'GTK_IS_WIDGET (widget)' failed
+
+(nm-applet:1839): Gtk-WARNING **: 16:29:27.676: Can't set a parent on widget which has a parent
+
+(nm-applet:1839): Gtk-CRITICAL **: 16:29:27.700: gtk_widget_destroy: assertion 'GTK_IS_WIDGET (widget)' failed
+
+(nm-applet:1839): Gtk-CRITICAL **: 16:29:27.700: gtk_widget_destroy: assertion 'GTK_IS_WIDGET (widget)' failed
+
+(nm-applet:1839): Gtk-WARNING **: 16:29:27.700: Can't set a parent on widget which has a parent
+
+(nm-applet:1839): Gtk-CRITICAL **: 16:29:27.711: gtk_widget_destroy: assertion 'GTK_IS_WIDGET (widget)' failed
+
+(nm-applet:1839): Gtk-CRITICAL **: 16:29:27.711: gtk_widget_destroy: assertion 'GTK_IS_WIDGET (widget)' failed
+
+(nm-applet:1839): Gtk-WARNING **: 16:29:27.711: Can't set a parent on widget which has a parent
+
+(nm-applet:1839): Gtk-CRITICAL **: 16:29:27.921: gtk_widget_destroy: assertion 'GTK_IS_WIDGET (widget)' failed
+
+(nm-applet:1839): Gtk-CRITICAL **: 16:29:27.921: gtk_widget_destroy: assertion 'GTK_IS_WIDGET (widget)' failed
+
+(nm-applet:1839): Gtk-WARNING **: 16:29:27.922: Can't set a parent on widget which has a parent
+
+(nm-applet:1839): Gtk-CRITICAL **: 16:29:27.923: gtk_widget_destroy: assertion 'GTK_IS_WIDGET (widget)' failed
+
+(nm-applet:1839): Gtk-CRITICAL **: 16:29:27.923: gtk_widget_destroy: assertion 'GTK_IS_WIDGET (widget)' failed
+
+(nm-applet:1839): Gtk-WARNING **: 16:29:27.924: Can't set a parent on widget which has a parent
+
+(nm-applet:1839): Gtk-CRITICAL **: 16:29:29.060: gtk_widget_destroy: assertion 'GTK_IS_WIDGET (widget)' failed
+
+(nm-applet:1839): Gtk-CRITICAL **: 16:29:29.060: gtk_widget_destroy: assertion 'GTK_IS_WIDGET (widget)' failed
+
+(nm-applet:1839): Gtk-WARNING **: 16:29:29.060: Can't set a parent on widget which has a parent
+
+(nm-applet:1839): Gtk-CRITICAL **: 16:29:33.877: gtk_widget_destroy: assertion 'GTK_IS_WIDGET (widget)' failed
+
+(nm-applet:1839): Gtk-CRITICAL **: 16:29:33.877: gtk_widget_destroy: assertion 'GTK_IS_WIDGET (widget)' failed
+
+(nm-applet:1839): Gtk-WARNING **: 16:29:36.680: Can't set a parent on widget which has a parent
+
+(nm-applet:1839): Gtk-CRITICAL **: 16:29:36.696: gtk_widget_destroy: assertion 'GTK_IS_WIDGET (widget)' failed
+
+(nm-applet:1839): Gtk-CRITICAL **: 16:29:36.696: gtk_widget_destroy: assertion 'GTK_IS_WIDGET (widget)' failed
+
+(nm-applet:1839): Gtk-WARNING **: 16:29:36.697: Can't set a parent on widget which has a parent
+
+(nm-applet:1839): Gtk-CRITICAL **: 16:29:36.717: gtk_widget_destroy: assertion 'GTK_IS_WIDGET (widget)' failed
+
+(nm-applet:1839): Gtk-CRITICAL **: 16:29:36.717: gtk_widget_destroy: assertion 'GTK_IS_WIDGET (widget)' failed
+
+(nm-applet:1839): Gtk-WARNING **: 16:29:36.720: Can't set a parent on widget which has a parent
+
+(nm-applet:1839): Gtk-CRITICAL **: 16:29:36.743: gtk_widget_destroy: assertion 'GTK_IS_WIDGET (widget)' failed
+
+(nm-applet:1839): Gtk-CRITICAL **: 16:29:36.743: gtk_widget_destroy: assertion 'GTK_IS_WIDGET (widget)' failed
+
+(nm-applet:1839): Gtk-WARNING **: 16:29:36.744: Can't set a parent on widget which has a parent
+
+(nm-applet:1839): Gtk-CRITICAL **: 16:29:36.751: gtk_widget_destroy: assertion 'GTK_IS_WIDGET (widget)' failed
+
+(nm-applet:1839): Gtk-CRITICAL **: 16:29:36.751: gtk_widget_destroy: assertion 'GTK_IS_WIDGET (widget)' failed
+
+(nm-applet:1839): Gtk-WARNING **: 16:29:36.752: Can't set a parent on widget which has a parent
+
+(nm-applet:1839): Gtk-CRITICAL **: 16:29:36.776: gtk_widget_destroy: assertion 'GTK_IS_WIDGET (widget)' failed
+
+(nm-applet:1839): Gtk-CRITICAL **: 16:29:36.776: gtk_widget_destroy: assertion 'GTK_IS_WIDGET (widget)' failed
+
+(nm-applet:1839): Gtk-WARNING **: 16:29:36.777: Can't set a parent on widget which has a parent
+
+(nm-applet:1839): Gtk-CRITICAL **: 16:29:36.788: gtk_widget_destroy: assertion 'GTK_IS_WIDGET (widget)' failed
+
+(nm-applet:1839): Gtk-CRITICAL **: 16:29:36.788: gtk_widget_destroy: assertion 'GTK_IS_WIDGET (widget)' failed
+
+(nm-applet:1839): Gtk-WARNING **: 16:29:36.788: Can't set a parent on widget which has a parent
+
+(nm-applet:1839): Gtk-CRITICAL **: 16:29:37.129: gtk_widget_destroy: assertion 'GTK_IS_WIDGET (widget)' failed
+
+(nm-applet:1839): Gtk-CRITICAL **: 16:29:37.129: gtk_widget_destroy: assertion 'GTK_IS_WIDGET (widget)' failed
+
+(nm-applet:1839): Gtk-WARNING **: 16:29:37.133: Can't set a parent on widget which has a parent
+/var/lib/dpkg/lock: 
+
+###!!! [Parent][DispatchAsyncMessage] Error: PClientSourceOp::Msg___delete__ Route error: message sent to unknown actor ID
+
+/run/unattended-upgrades.lock:
+Gtk-Message: 16:50:10.877: GtkDialog mapped without a transient parent. This is discouraged.
+
+(update-manager:11002): dbind-WARNING **: 16:50:11.159: Couldn't register with accessibility bus: Did not receive a reply. Possible causes include: the remote application did not send a reply, the message bus security policy blocked the reply, the reply timeout expired, or the network connection was broken.
